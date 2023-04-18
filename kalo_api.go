@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"image/png"
 	"net/http"
 	"os"
 	"path"
@@ -69,18 +68,18 @@ func saveResp(resp *http.Response, outDir string) error {
 	}
 
 	for _, b64Img := range kr.Images {
-		img, err := base64ToImage(b64Img.Image)
+		imgBytes, err := base64ToBytes(b64Img.Image)
 		if err != nil {
 			return errors.Wrap(err, "failed to decode base64 image")
 		}
-		w, err := os.Create(path.Join(outDir, b64Img.ID+".png"))
+		w, err := os.Create(path.Join(outDir, b64Img.ID+".webp"))
 		if err != nil {
 			return errors.Wrap(err, "failed to create file")
 		}
 		defer w.Close()
-		err = png.Encode(w, img)
+		_, err = w.Write(imgBytes)
 		if err != nil {
-			return errors.Wrap(err, "failed to encode image")
+			return errors.Wrap(err, "failed to write file")
 		}
 	}
 

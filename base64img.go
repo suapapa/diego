@@ -1,25 +1,18 @@
 package main
 
 import (
-	"bytes"
 	"encoding/base64"
-	"image"
 
 	"github.com/pkg/errors"
 )
 
-func base64ToImage(base64String string) (image.Image, error) {
+func base64ToBytes(base64String string) ([]byte, error) {
 	// Decode base64 string to image
 	decoded, err := base64.StdEncoding.DecodeString(base64String)
 	if err != nil {
 		return nil, errors.Wrap(err, "fail to decoding base64 string")
 	}
-	// Decode image from bytes
-	img, _, err := image.Decode(bytes.NewReader(decoded))
-	if err != nil {
-		return nil, errors.Wrap(err, "fail to decoding image")
-	}
-	return img, nil
+	return decoded, err
 }
 
 // func imageToBase64(img image.Image) string {
