@@ -50,11 +50,7 @@ func makeRequest(prompt string, batchSize int) (*http.Request, error) {
 		return nil, errors.Wrap(err, "failed to make request")
 	}
 
-	apiKey := os.Getenv("KAKAO_REST_API_KEY")
-	if apiKey == "" {
-		return nil, errors.New("KAKAO_REST_API_KEY is not set")
-	}
-	req.Header.Add("Authorization", "KakaoAK "+apiKey)
+	req.Header.Add("Authorization", "KakaoAK "+kakaoApiKey)
 	req.Header.Add("Content-Type", "application/json")
 
 	return req, nil
